@@ -338,6 +338,18 @@ export const makeScanAccounts = (
                   : "no account"
               }`
             );
+
+            console.log(
+              "scanAccounts",
+              `scanning ${currency.id} at ${freshAddressPath}: ${
+                res.address
+              } resulted of ${
+                account
+                  ? `Account with ${account.operations.length} txs`
+                  : "no account"
+              }`
+            );
+
             if (!account) return;
 
             account.name = !account.used

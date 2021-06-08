@@ -1,0 +1,105 @@
+// @flow
+import { BigNumber } from "bignumber.js";
+import { Observable } from "rxjs";
+import { FeeNotLoaded } from "@ledgerhq/errors";
+
+import type { Transaction } from "./types";
+import type { Account, Operation, SignOperationEvent } from "../../types";
+
+import { open, close } from "../../hw";
+import { encodeOperationId } from "../../operation";
+import Elrond from "./hw-app-elrond";
+
+import { buildTransaction } from "./js-buildTransaction";
+import { getNonce } from "./logic";
+import { accountToAccountData } from "../../cross";
+
+const buildOptimisticOperation = (
+  account: Account,
+  transaction: Transaction,
+  fee: BigNumber
+): Operation => {
+  const type = "OUT";
+
+  const value = BigNumber(transaction.amount);
+
+  const operation: $Exact<Operation> = {
+    id: encodeOperationId(account.id, "", type),
+    hash: "",
+    type,
+    value,
+    fee,
+    blockHash: null,
+    blockHeight: 6,
+    senders: [account.freshAddress],
+    recipients: [transaction.recipient].filter(Boolean),
+    accountId: account.id,
+    transactionSequenceNumber: getNonce(account),
+    date: new Date(),
+  };
+
+  return operation;
+};
+
+/**
+ * Sign Transaction with Ledger hardware
+ */
+const signOperation = ({
+  account,
+  deviceId,
+  transaction,
+}: {
+  account: Account,
+  deviceId: *,
+  transaction: Transaction,
+}): Observable<SignOperationEvent> =>
+  Observable.create((o) => {
+    async function main() {
+      console.log("signOperation");
+      const transport = await open(deviceId);
+
+      try {
+        o.next({ type: "device-signature-requested" });
+
+        if (!transaction.fees) {
+          throw new FeeNotLoaded();
+        }
+
+        const unsigned = await buildTransaction(account, transaction);
+
+        // Sign by device
+        const elrond = new Elrond(transport);
+
+        const r = await elrond.signTransaction(
+          account.freshAddressPath,
+          unsigned,
+          true
+        );
+
+        o.next({ type: "device-signature-granted" });
+
+        const operation = buildOptimisticOperation(
+          account,
+          transaction,
+          transaction.fees ?? BigNumber(0)
+        );
+
+        o.next({
+          type: "signed",
+          signedOperation: {
+            operation,
+            signature: r,
+            expirationDate: null,
+          },
+        });
+      } finally {
+        close(transport, deviceId);
+      }
+    }
+    main().then(
+      () => o.complete(),
+      (e) => o.error(e)
+    );
+  });
+
+export default signOperation;
