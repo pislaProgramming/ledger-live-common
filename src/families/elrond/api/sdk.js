@@ -123,9 +123,9 @@ export const getFees = async (unsigned): Promise<BigNumber> => {
   const { data, gasLimit } = unsigned;
 
   if (!data) {
-    return BigNumber(gasLimit);
+    return BigNumber(gasLimit * 1000000000);
   } else {
-    return BigNumber(gasLimit + 1500 * data.length);
+    return BigNumber((gasLimit + 1500 * data.length) * 1000000000);
   }
 };
 

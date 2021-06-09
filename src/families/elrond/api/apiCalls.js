@@ -98,9 +98,6 @@ export default class ElrondApi {
     return { hash };
   }
   async getHistory(addr: string, startAt: number) {
-    console.log("addr", addr);
-    console.log("startAt", startAt);
-
     const {
       data: {
         fee: fees,
