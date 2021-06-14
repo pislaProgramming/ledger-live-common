@@ -5,6 +5,7 @@ import ElrondApi from "./apiCalls";
 import type { Transaction } from "../types";
 import type { Operation, OperationType } from "../../../types";
 import { getEnv } from "../../../env";
+import { encodeOperationId } from "../../../operation";
 
 type AsyncApiFunction = (api: typeof ElrondApi) => Promise<any>;
 
@@ -67,7 +68,7 @@ function getOperationType(
  */
 function getOperationValue(transaction: Transaction, addr: string): BigNumber {
   return isSender(transaction, addr)
-    ? BigNumber(transaction.value).plus(transaction.fees)
+    ? BigNumber(transaction.value).plus(transaction.fee)
     : BigNumber(transaction.value);
 }
 
@@ -82,22 +83,22 @@ function transactionToOperation(
   const type = getOperationType(transaction, addr);
 
   return {
-    id: encodeOperationId(accountId, transaction.hash, type),
+    id: encodeOperationId(accountId, transaction.txHash, type),
     accountId,
-    fee: BigNumber(transaction.fees || 0),
+    fee: BigNumber(transaction.fee || 0),
     value: getOperationValue(transaction, addr),
     type,
-    hash: transaction.hash,
-    blockHash: null,
-    blockHeight: transaction.blockNumber,
-    date: new Date(transaction.timestamp),
+    hash: transaction.txHash,
+    blockHash: transaction.miniBlockHash,
+    blockHeight: 6,
+    date: new Date(transaction.timestamp * 1000),
     // extra: getOperationExtra(transaction),
     senders: [transaction.sender],
-    recipients: transaction.recipient ? [transaction.recipient] : [],
+    recipients: transaction.receiver ? [transaction.receiver] : [],
     transactionSequenceNumber: isSender(transaction, addr)
       ? transaction.nonce
       : undefined,
-    hasFailed: !transaction.success,
+    hasFailed: transaction.status === "fail",
   };
 }
 

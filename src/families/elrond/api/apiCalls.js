@@ -33,14 +33,20 @@ export default class ElrondApi {
   }
 
   async getValidators() {
-    const {
-      data: { validators },
-    } = await network({
-      method: "GET",
-      url: `${this.apiUrl}/validator/statistics`,
-    });
+    let data = [];
+    try {
+      let {
+        data: { validators },
+      } = await network({
+        method: "GET",
+        url: `${this.apiUrl}/validator/statistics`,
+      });
+      data = validators;
+    } catch (error) {
+      return data;
+    }
 
-    return validators;
+    return data;
   }
 
   async getNetworkConfig() {
@@ -98,31 +104,11 @@ export default class ElrondApi {
     return { hash };
   }
   async getHistory(addr: string, startAt: number) {
-    const {
-      data: {
-        fee: fees,
-        txHash: hash,
-        value,
-        timestamp,
-        sender,
-        receiver: recipient,
-        nonce,
-        status,
-      },
-    } = await network({
+    const { data: transactions } = await network({
       method: "GET",
       url: `${this.apiUrl}/transactions?condition=should&after=${startAt}&sender=${addr}&receiver=${addr}`,
     });
 
-    return {
-      hash,
-      fees,
-      value,
-      timestamp,
-      sender,
-      recipient,
-      nonce,
-      success: true ? status === "success" : false,
-    };
+    return transactions;
   }
 }

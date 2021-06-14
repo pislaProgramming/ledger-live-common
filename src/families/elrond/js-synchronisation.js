@@ -12,15 +12,17 @@ const getAccountShape: GetAccountShape = async (info) => {
 
   // Needed for incremental synchronisation
   const startAt = oldOperations.length
-    ? (oldOperations[0].blockHeight || 0) + 1
+    ? (oldOperations[0].date.getTime() || 0) + 1
     : 0;
 
   // get the current account balance state depending your api implementation
   const { blockHeight, balance, nonce } = await getAccount(address);
 
   // Merge new operations with the previously synced ones
-  const newOperations = []; //await getOperations(id, address, startAt);
+  const newOperations = await getOperations(id, address, startAt);
   const operations = mergeOps(oldOperations, newOperations);
+
+  console.log("operations", operations);
 
   const shape = {
     id,

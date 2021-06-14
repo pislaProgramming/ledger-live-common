@@ -17,9 +17,13 @@ function formatAccountSpecifics(account: Account): string {
 
   let str = " ";
 
-  str +=
-    formatCurrencyUnit(unit, account.spendableBalance, formatConfig) +
-    " spendable. ";
+  if (account.spendableBalance) {
+    str +=
+      formatCurrencyUnit(unit, account.spendableBalance, formatConfig) +
+      " spendable. ";
+  } else {
+    str += " 0 spendable.";
+  }
 
   if (elrondResources.nonce) {
     str += "\nonce : " + elrondResources.nonce;
@@ -29,7 +33,7 @@ function formatAccountSpecifics(account: Account): string {
 }
 
 function formatOperationSpecifics(op: Operation, unit: ?Unit): string {
-  const { additionalField } = op.extra;
+  // const { additionalField } = op.extra;
 
   let str = " ";
 
