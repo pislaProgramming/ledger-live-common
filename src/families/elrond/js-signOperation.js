@@ -30,7 +30,7 @@ const buildOptimisticOperation = (
     value,
     fee,
     blockHash: null,
-    blockHeight: 6,
+    blockHeight: account.blockHeight,
     senders: [account.freshAddress],
     recipients: [transaction.recipient].filter(Boolean),
     accountId: account.id,

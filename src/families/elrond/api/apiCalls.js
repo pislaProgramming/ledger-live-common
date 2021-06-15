@@ -103,6 +103,7 @@ export default class ElrondApi {
 
     return { hash };
   }
+
   async getHistory(addr: string, startAt: number) {
     const { data: transactions } = await network({
       method: "GET",
@@ -110,5 +111,31 @@ export default class ElrondApi {
     });
 
     return transactions;
+  }
+
+  async getLatestTransaction(addr: string) {
+    const {
+      data: [{ txHash }],
+    } = await network({
+      method: "GET",
+      url: `${this.apiUrl}/transactions?condition=should&sender=${addr}&receiver=${addr}`,
+    });
+
+    return txHash;
+  }
+
+  async getConfirmedTransaction(txHash: string) {
+    const {
+      data: {
+        data: {
+          transaction: { hyperblockNonce, blockHash },
+        },
+      },
+    } = await network({
+      method: "GET",
+      url: `https://testnet-gateway.elrond.com/transaction/${txHash}`,
+    });
+
+    return { blockHeight: hyperblockNonce, blockHash };
   }
 }

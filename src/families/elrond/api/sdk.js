@@ -19,15 +19,28 @@ let api = new ElrondApi(ELROND_API_ENDPOINT());
 export const getAccount = async (addr: string) => {
   const balance = await api.getBalance(addr);
   const nonce = await api.getNonce(addr);
-  const blockHeight = await api.getBlockHeight();
-
-  const balanceBn = new BigNumber(balance);
+  const latestTransactionHash = await api.getLatestTransaction(addr);
+  const { blockHeight } = await api.getConfirmedTransaction(
+    latestTransactionHash
+  );
 
   return {
     blockHeight,
-    balance: balanceBn,
+    balance: new BigNumber(balance),
     nonce,
   };
+};
+
+export const confirmOperation = async (txHash: string) => {
+  let { blockHash, blockHeight } = await api.getConfirmedTransaction(txHash);
+
+  while (!blockHash || !blockHeight) {
+    const confirmation = await api.getConfirmedTransaction(txHash);
+    blockHeight = confirmation.blockHeight;
+    blockHash = confirmation.blockHash;
+  }
+
+  return { blockHash, blockHeight };
 };
 
 export const getValidators = async () => {

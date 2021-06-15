@@ -39,17 +39,6 @@ const getTransactionStatus = async (
     errors.amount = new NotEnoughBalance();
   }
 
-  //   // If MyCoin needs any specific requirement on amount for instance
-  //   if (specificCheck(t.amount)) {
-  //     errors.amount = new MyCoinSpecificError();
-  //   }
-
-  //   if (!t.recipient) {
-  //     errors.recipient = new RecipientRequired();
-  //   } else if (isValidAddress(t.recipient)) {
-  //     errors.recipient = new InvalidAddress();
-  //   }
-
   return Promise.resolve({
     errors,
     warnings,

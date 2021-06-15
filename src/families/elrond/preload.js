@@ -54,7 +54,7 @@ export const preload = async (): Promise<ElrondPreloadData> => {
   log("mycoin/preload", "preloading mycoin data...");
 
   console.log("preload");
-  const validators = await getValidators();
+  const validators = (await getValidators()) || [];
 
   return { validators };
 };
