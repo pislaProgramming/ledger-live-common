@@ -6,13 +6,12 @@ import { makeSync, makeScanAccounts, mergeOps } from "../../bridge/jsHelpers";
 import { getAccount, getOperations } from "./api";
 
 const getAccountShape: GetAccountShape = async (info) => {
-  console.log("getAccountShape");
   const { id, address, initialAccount } = info;
   const oldOperations = initialAccount?.operations || [];
 
   // Needed for incremental synchronisation
   const startAt = oldOperations.length
-    ? (oldOperations[0].blockHeight || 0) + 1
+    ? (oldOperations[0].date.getTime() || 0) + 1
     : 0;
 
   // get the current account balance state depending your api implementation
@@ -22,6 +21,7 @@ const getAccountShape: GetAccountShape = async (info) => {
   const newOperations = await getOperations(id, address, startAt);
   const operations = mergeOps(oldOperations, newOperations);
 
+  console.log("Shape blockHeight", blockHeight);
   const shape = {
     id,
     balance,
@@ -33,7 +33,6 @@ const getAccountShape: GetAccountShape = async (info) => {
     },
   };
 
-  console.log("getAccountShape end");
   return { ...shape, operations };
 };
 

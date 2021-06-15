@@ -12,7 +12,6 @@ import Elrond from "./hw-app-elrond";
 
 import { buildTransaction } from "./js-buildTransaction";
 import { getNonce } from "./logic";
-import { accountToAccountData } from "../../cross";
 
 const buildOptimisticOperation = (
   account: Account,
@@ -22,6 +21,8 @@ const buildOptimisticOperation = (
   const type = "OUT";
 
   const value = BigNumber(transaction.amount);
+
+  console.log("Account blockHeight", account.blockHeight);
 
   const operation: $Exact<Operation> = {
     id: encodeOperationId(account.id, "", type),

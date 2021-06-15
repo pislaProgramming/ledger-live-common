@@ -3,7 +3,6 @@ import network from "../../../network";
 export default class ElrondApi {
   constructor(apiUrl: String) {
     this.apiUrl = apiUrl;
-    this.blockHeight = 6;
   }
 
   async getBalance(addr: String) {
@@ -26,10 +25,6 @@ export default class ElrondApi {
     });
 
     return nonce;
-  }
-
-  async getBlockHeight() {
-    return this.blockHeight;
   }
 
   async getValidators() {
@@ -110,7 +105,15 @@ export default class ElrondApi {
       url: `${this.apiUrl}/transactions?condition=should&after=${startAt}&sender=${addr}&receiver=${addr}`,
     });
 
-    return transactions;
+    return Promise.all(
+      transactions.map(async (transaction) => {
+        const { blockHeight, blockHash } = await this.getConfirmedTransaction(
+          transaction.txHash
+        );
+
+        return { ...transaction, blockHash, blockHeight };
+      })
+    );
   }
 
   async getLatestTransaction(addr: string) {
