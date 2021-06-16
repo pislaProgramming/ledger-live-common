@@ -9,8 +9,7 @@ import {
 import type { Account, TransactionStatus } from "../../types";
 import type { Transaction } from "./types";
 
-import { isValidAddress, specificCheck } from "./logic";
-import { ElrondSpecificError } from "./errors";
+import { isValidAddress } from "./logic";
 
 const getTransactionStatus = async (
   a: Account,
@@ -20,6 +19,14 @@ const getTransactionStatus = async (
   const errors = {};
   const warnings = {};
   const useAllAmount = !!t.useAllAmount;
+
+  if (!t.recipient) {
+    errors.recipient = new RecipientRequired();
+  }
+
+  if (!isValidAddress(t.recipient)) {
+    errors.recipient = new InvalidAddress();
+  }
 
   if (!t.fees) {
     errors.fees = new FeeNotLoaded();

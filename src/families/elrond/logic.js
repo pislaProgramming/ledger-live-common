@@ -1,29 +1,32 @@
 // @flow
-import { BigNumber } from "bignumber.js";
 import type { Account } from "../../types";
 
 import { getNetworkConfig } from "./api";
+import bech32 from "bech32";
 
 export const MAX_AMOUNT = 5000;
 
 /**
- * Returns true if address is a valid md5
+ * Returns true if address is a valid bech32
  *
  * @param {string} address
  */
 export const isValidAddress = (address: string): boolean => {
   if (!address) return false;
 
-  return !!address.match(/^[a-f0-9]{32}$/);
-};
+  try {
+    const decodedAddress = bech32.decode(address, 256);
+    const publicKey = Buffer.from(
+      bech32.fromWords(decodedAddress.words)
+    ).toString("hex");
 
-/**
- * Returns true if transaction amount is less than MAX AMOUNT and > 0
- *
- * @param {BigNumber} amount
- */
-export const specificCheck = (amount: BigNumber): boolean => {
-  return amount.gt(0) && amount.lte(MAX_AMOUNT);
+    console.log("address", address);
+    console.log("publicKey", publicKey);
+
+    return !!publicKey.match(/^[a-f0-9]{64}$/);
+  } catch (error) {
+    return false;
+  }
 };
 
 /**
