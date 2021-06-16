@@ -21,7 +21,6 @@ const getAccountShape: GetAccountShape = async (info) => {
   const newOperations = await getOperations(id, address, startAt);
   const operations = mergeOps(oldOperations, newOperations);
 
-  console.log("Shape blockHeight", blockHeight);
   const shape = {
     id,
     balance,

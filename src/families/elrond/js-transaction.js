@@ -13,7 +13,6 @@ const sameFees = (a, b) => (!a || !b ? false : a === b);
  * @returns {Transaction}
  */
 export const createTransaction = (): Transaction => {
-  console.log("createTransaction");
   return {
     family: "elrond",
     mode: "send",
@@ -34,7 +33,6 @@ export const updateTransaction = (
   t: Transaction,
   patch: $Shape<Transaction>
 ) => {
-  console.log("updateTransaction");
   return { ...t, ...patch };
 };
 
@@ -45,10 +43,8 @@ export const updateTransaction = (
  * @param {Transaction} t
  */
 export const prepareTransaction = async (a: Account, t: Transaction) => {
-  console.log("prepareTransaction");
   let fees = t.fees;
 
-  console.log("Transaction fees", fees);
   fees = await getEstimatedFees({ a, t });
 
   if (!sameFees(t.fees, fees)) {

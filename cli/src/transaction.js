@@ -79,11 +79,7 @@ export async function inferTransactions(
   mainAccount: Account,
   opts: InferTransactionsOpts
 ): Promise<[Transaction, TransactionStatus][]> {
-  console.log("Getting bridge...");
-
   const bridge = getAccountBridge(mainAccount, null);
-
-  console.log("Bridge detected");
 
   const specific = perFamily[mainAccount.currency.family];
 

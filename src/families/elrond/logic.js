@@ -20,9 +20,6 @@ export const isValidAddress = (address: string): boolean => {
       bech32.fromWords(decodedAddress.words)
     ).toString("hex");
 
-    console.log("address", address);
-    console.log("publicKey", publicKey);
-
     return !!publicKey.match(/^[a-f0-9]{64}$/);
   } catch (error) {
     return false;

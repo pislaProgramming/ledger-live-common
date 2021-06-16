@@ -15,7 +15,6 @@ const getTransactionStatus = async (
   a: Account,
   t: Transaction
 ): Promise<TransactionStatus> => {
-  console.log("getTransactionStatus");
   const errors = {};
   const warnings = {};
   const useAllAmount = !!t.useAllAmount;

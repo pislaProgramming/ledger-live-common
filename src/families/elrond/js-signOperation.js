@@ -22,8 +22,6 @@ const buildOptimisticOperation = (
 
   const value = BigNumber(transaction.amount);
 
-  console.log("Account blockHeight", account.blockHeight);
-
   const operation: $Exact<Operation> = {
     id: encodeOperationId(account.id, "", type),
     hash: "",
@@ -56,7 +54,6 @@ const signOperation = ({
 }): Observable<SignOperationEvent> =>
   Observable.create((o) => {
     async function main() {
-      console.log("signOperation");
       const transport = await open(deviceId);
 
       try {

@@ -44,26 +44,23 @@ export function getElrondPreloadDataUpdates(): Observable<ElrondPreloadData> {
 }
 
 export const getPreloadStrategy = () => {
-  console.log("getPreloadStrategy");
   return {
     preloadMaxAge: PRELOAD_MAX_AGE,
   };
 };
 
 export const preload = async (): Promise<ElrondPreloadData> => {
-  log("mycoin/preload", "preloading mycoin data...");
+  log("elrond/preload", "preloading elrond data...");
 
-  console.log("preload");
   const validators = (await getValidators()) || [];
 
   return { validators };
 };
 
 export const hydrate = (data: mixed) => {
-  console.log("hydrate");
   const hydrated = fromHydratePreloadData(data);
 
-  log("mycoin/preload", `hydrated foo with ${hydrated.validators.foo}`);
+  log("elrond/preload", `hydrated foo with ${hydrated.validators.foo}`);
 
   setElrondPreloadData(hydrated);
 };

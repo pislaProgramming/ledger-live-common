@@ -23,7 +23,6 @@ const estimateMaxSpendable = async ({
   parentAccount: ?Account,
   transaction: ?Transaction,
 }): Promise<BigNumber> => {
-  console.log("estimateMaxSpendable");
   const a = getMainAccount(account, parentAccount);
   const t = {
     ...createTransaction(),
