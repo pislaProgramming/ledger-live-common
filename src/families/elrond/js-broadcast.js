@@ -2,7 +2,7 @@
 import type { Operation, SignedOperation } from "../../types";
 import { patchOperationWithHash } from "../../operation";
 
-import { submit } from "./api";
+import { submit, confirmOperation } from "./api";
 
 /**
  * Broadcast the signed transaction
@@ -14,6 +14,11 @@ const broadcast = async ({
   signedOperation: SignedOperation,
 }): Promise<Operation> => {
   const { hash } = await submit({ operation, signature });
+
+  const { blockHeight, blockHash } = await confirmOperation(hash);
+
+  operation.blockHash = blockHash;
+  operation.blockHeight = blockHeight;
 
   return patchOperationWithHash(operation, hash);
 };
