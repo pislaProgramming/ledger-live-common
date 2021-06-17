@@ -106,6 +106,8 @@ export default class ElrondApi {
       url: `${this.API_URL}/transactions?condition=should&after=${startAt}&sender=${addr}&receiver=${addr}`,
     });
 
+    if (!transactions.length) return transactions; //Account does not have any transactions
+
     return Promise.all(
       transactions.map(async (transaction) => {
         const { blockHeight, blockHash } = await this.getConfirmedTransaction(
@@ -118,12 +120,23 @@ export default class ElrondApi {
   }
 
   async getLatestTransaction(addr: string) {
-    const {
-      data: [{ txHash }],
-    } = await network({
+    let { data: transactions } = await network({
       method: "GET",
       url: `${this.API_URL}/transactions?condition=should&sender=${addr}&receiver=${addr}`,
     });
+
+    if (!transactions.length) {
+      //Account does not have any transactions
+      //Get latest transaction from api to set blockHeight of account
+      const { data: allTransactions } = await network({
+        method: "GET",
+        url: `${this.API_URL}/transactions`,
+      });
+
+      transactions = allTransactions;
+    }
+
+    const txHash = transactions[0].txHash;
 
     return txHash;
   }

@@ -124,6 +124,8 @@ export const getOperations = async (
 ): Promise<Operation[]> => {
   const rawTransactions = await api.getHistory(addr, startAt);
 
+  if (!rawTransactions) return rawTransactions;
+
   return rawTransactions.map((transaction) =>
     transactionToOperation(accountId, addr, transaction)
   );
