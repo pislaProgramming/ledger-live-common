@@ -92,7 +92,6 @@
     "async": "^3.2.0",
     "axios": "0.21.1",
     "bchaddrjs": "^0.5.2",
-    "bech32": "^2.0.0",
     "bignumber.js": "^9.0.1",
     "bip32-path": "^0.4.2",
     "blake2b": "^2.1.3",

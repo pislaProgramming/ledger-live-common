@@ -12,16 +12,11 @@ import bech32 from "bech32";
 export const isValidAddress = (address: string): boolean => {
   if (!address) return false;
 
-  try {
-    const decodedAddress = bech32.decode(address, 256);
-    const publicKey = Buffer.from(
-      bech32.fromWords(decodedAddress.words)
-    ).toString("hex");
+  if (!address.startsWith("erd1")) return false;
 
-    return !!publicKey.match(/^[a-f0-9]{64}$/);
-  } catch (error) {
-    return false;
-  }
+  if (address.length !== 62) return false;
+
+  return true;
 };
 
 /**
