@@ -1,5 +1,4 @@
 // @flow
-import { BigNumber } from "bignumber.js";
 import type { ElrondResourcesRaw, ElrondResources } from "./types";
 
 export function toElrondResourcesRaw(r: ElrondResources): ElrondResourcesRaw {

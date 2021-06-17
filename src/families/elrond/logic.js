@@ -4,8 +4,6 @@ import type { Account } from "../../types";
 import { getNetworkConfig } from "./api";
 import bech32 from "bech32";
 
-export const MAX_AMOUNT = 5000;
-
 /**
  * Returns true if address is a valid bech32
  *

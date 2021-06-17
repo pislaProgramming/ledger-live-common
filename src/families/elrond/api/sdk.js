@@ -7,11 +7,10 @@ import type { Operation, OperationType } from "../../../types";
 import { getEnv } from "../../../env";
 import { encodeOperationId } from "../../../operation";
 
-type AsyncApiFunction = (api: typeof ElrondApi) => Promise<any>;
-
 const ELROND_API_ENDPOINT = () => getEnv("ELROND_API_ENDPOINT");
+const ELROND_GATEWAY_ENDPOINT = () => getEnv("ELROND_GATEWAY_ENDPOINT");
 
-let api = new ElrondApi(ELROND_API_ENDPOINT());
+let api = new ElrondApi(ELROND_API_ENDPOINT(), ELROND_GATEWAY_ENDPOINT());
 
 /**
  * Get account balances and nonce

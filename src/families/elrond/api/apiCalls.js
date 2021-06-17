@@ -1,8 +1,9 @@
 import network from "../../../network";
 
 export default class ElrondApi {
-  constructor(apiUrl: String) {
-    this.apiUrl = apiUrl;
+  constructor(API_URL: String, GATEWAY_URL: String) {
+    this.API_URL = API_URL;
+    this.GATEWAY_URL = GATEWAY_URL;
   }
 
   async getBalance(addr: String) {
@@ -10,7 +11,7 @@ export default class ElrondApi {
       data: { balance },
     } = await network({
       method: "GET",
-      url: `${this.apiUrl}/accounts/${addr}`,
+      url: `${this.API_URL}/accounts/${addr}`,
     });
 
     return balance;
@@ -21,7 +22,7 @@ export default class ElrondApi {
       data: { nonce },
     } = await network({
       method: "GET",
-      url: `${this.apiUrl}/accounts/${addr}`,
+      url: `${this.API_URL}/accounts/${addr}`,
     });
 
     return nonce;
@@ -34,7 +35,7 @@ export default class ElrondApi {
         data: { validators },
       } = await network({
         method: "GET",
-        url: `${this.apiUrl}/validator/statistics`,
+        url: `${this.API_URL}/validator/statistics`,
       });
       data = validators;
     } catch (error) {
@@ -58,7 +59,7 @@ export default class ElrondApi {
       },
     } = await network({
       method: "GET",
-      url: `${this.apiUrl}/network/config`,
+      url: `${this.API_URL}/network/config`,
     });
 
     return { chainId, denomination, gasLimit, gasPrice };
@@ -81,7 +82,7 @@ export default class ElrondApi {
       },
     } = await network({
       method: "POST",
-      url: `${this.apiUrl}/transaction/send`,
+      url: `${this.API_URL}/transaction/send`,
       data: {
         nonce,
         value,
@@ -102,7 +103,7 @@ export default class ElrondApi {
   async getHistory(addr: string, startAt: number) {
     const { data: transactions } = await network({
       method: "GET",
-      url: `${this.apiUrl}/transactions?condition=should&after=${startAt}&sender=${addr}&receiver=${addr}`,
+      url: `${this.API_URL}/transactions?condition=should&after=${startAt}&sender=${addr}&receiver=${addr}`,
     });
 
     return Promise.all(
@@ -121,7 +122,7 @@ export default class ElrondApi {
       data: [{ txHash }],
     } = await network({
       method: "GET",
-      url: `${this.apiUrl}/transactions?condition=should&sender=${addr}&receiver=${addr}`,
+      url: `${this.API_URL}/transactions?condition=should&sender=${addr}&receiver=${addr}`,
     });
 
     return txHash;
@@ -136,7 +137,7 @@ export default class ElrondApi {
       },
     } = await network({
       method: "GET",
-      url: `https://testnet-gateway.elrond.com/transaction/${txHash}`,
+      url: `${this.GATEWAY_URL}/transaction/${txHash}`,
     });
 
     return { blockHeight: hyperblockNonce, blockHash };

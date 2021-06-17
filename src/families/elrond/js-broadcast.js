@@ -2,7 +2,7 @@
 import type { Operation, SignedOperation } from "../../types";
 import { patchOperationWithHash } from "../../operation";
 
-import { submit, confirmOperation } from "./api";
+import { submit } from "./api";
 
 /**
  * Broadcast the signed transaction

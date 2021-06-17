@@ -33,8 +33,6 @@ function formatAccountSpecifics(account: Account): string {
 }
 
 function formatOperationSpecifics(op: Operation, unit: ?Unit): string {
-  // const { additionalField } = op.extra;
-
   let str = " ";
 
   const formatConfig = {
@@ -43,41 +41,10 @@ function formatOperationSpecifics(op: Operation, unit: ?Unit): string {
     showCode: true,
   };
 
-  // str +=
-  //   additionalField && !additionalField.isNaN()
-  //     ? `\n    additionalField: ${
-  //         unit
-  //           ? formatCurrencyUnit(unit, additionalField, formatConfig)
-  //           : additionalField
-  //       }`
-  //     : "";
-
   return str;
 }
-
-// export function fromOperationExtraRaw(extra: ?Object) {
-//   if (extra && extra.additionalField) {
-//     extra = {
-//       ...extra,
-//       additionalField: BigNumber(extra.additionalField),
-//     };
-//   }
-//   return extra;
-// }
-
-// export function toOperationExtraRaw(extra: ?Object) {
-//   if (extra && extra.additionalField) {
-//     extra = {
-//       ...extra,
-//       additionalField: extra.additionalField.toString(),
-//     };
-//   }
-//   return extra;
-// }
 
 export default {
   formatAccountSpecifics,
   formatOperationSpecifics,
-  // fromOperationExtraRaw,
-  // toOperationExtraRaw,
 };
