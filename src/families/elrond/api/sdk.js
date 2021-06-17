@@ -19,9 +19,7 @@ export const getAccount = async (addr: string) => {
   const balance = await api.getBalance(addr);
   const nonce = await api.getNonce(addr);
   const latestTransactionHash = await api.getLatestTransaction();
-  const { blockHeight } = await api.getConfirmedTransaction(
-    latestTransactionHash
-  );
+  const { blockHeight } = await confirmOperation(latestTransactionHash);
 
   return {
     blockHeight,

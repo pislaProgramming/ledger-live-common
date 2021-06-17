@@ -119,7 +119,7 @@ export default class ElrondApi {
     );
   }
 
-  async getLatestTransaction(addr: string) {
+  async getLatestTransaction() {
     const {
       data: [{ txHash }],
     } = await network({
