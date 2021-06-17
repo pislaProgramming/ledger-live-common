@@ -85,12 +85,12 @@ const envDefinitions = {
   },
   ELROND_API_ENDPOINT: {
     parser: stringParser,
-    def: "https://testnet-api.elrond.com",
+    def: "https://api.elrond.com",
     desc: "Elrond API url",
   },
   ELROND_GATEWAY_ENDPOINT: {
     parser: stringParser,
-    def: "https://testnet-gateway.elrond.com",
+    def: "https://gateway.elrond.com",
     desc: "Elrond GATEWAY url",
   },
   API_STELLAR_HORIZON: {
