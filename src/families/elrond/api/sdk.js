@@ -18,7 +18,7 @@ let api = new ElrondApi(ELROND_API_ENDPOINT(), ELROND_GATEWAY_ENDPOINT());
 export const getAccount = async (addr: string) => {
   const balance = await api.getBalance(addr);
   const nonce = await api.getNonce(addr);
-  const latestTransactionHash = await api.getLatestTransaction(addr);
+  const latestTransactionHash = await api.getLatestTransaction();
   const { blockHeight } = await api.getConfirmedTransaction(
     latestTransactionHash
   );
