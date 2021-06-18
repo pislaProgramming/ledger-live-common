@@ -101,10 +101,10 @@ export default class ElrondApi {
     return { hash };
   }
 
-  async getHistory(addr: string, startAt: number) {
+  async getHistory(addr: string) {
     const { data: transactions } = await network({
       method: "GET",
-      url: `${this.API_URL}/transactions?condition=should&after=${startAt}&sender=${addr}&receiver=${addr}`,
+      url: `${this.API_URL}/transactions?condition=should&sender=${addr}&receiver=${addr}`,
     });
 
     if (!transactions.length) return transactions; //Account does not have any transactions
