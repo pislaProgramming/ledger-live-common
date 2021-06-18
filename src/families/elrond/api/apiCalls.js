@@ -2,9 +2,8 @@ import network from "../../../network";
 import { HASH_TRANSACTION, RAW_TRANSACTION } from "../constants";
 
 export default class ElrondApi {
-  constructor(API_URL: String, GATEWAY_URL: String) {
+  constructor(API_URL: String) {
     this.API_URL = API_URL;
-    this.GATEWAY_URL = GATEWAY_URL;
   }
 
   async getBalance(addr: String) {
@@ -141,7 +140,7 @@ export default class ElrondApi {
       },
     } = await network({
       method: "GET",
-      url: `${this.GATEWAY_URL}/transaction/${txHash}`,
+      url: `${this.API_URL}/transaction/${txHash}`,
     });
 
     return { blockHeight: hyperblockNonce, blockHash };

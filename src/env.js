@@ -88,11 +88,6 @@ const envDefinitions = {
     def: "https://api.elrond.com",
     desc: "Elrond API url",
   },
-  ELROND_GATEWAY_ENDPOINT: {
-    parser: stringParser,
-    def: "https://gateway.elrond.com",
-    desc: "Elrond GATEWAY url",
-  },
   API_STELLAR_HORIZON: {
     parser: stringParser,
     def: "https://stellar.coin.ledger.com",
