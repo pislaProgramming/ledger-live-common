@@ -19,11 +19,6 @@ const broadcast = async ({
 
   const { hash } = await submit({ operation, signature, signUsingHash });
 
-  const { blockHeight, blockHash } = await confirmOperation(hash);
-
-  operation.blockHash = blockHash;
-  operation.blockHeight = blockHeight;
-
   return patchOperationWithHash(operation, hash);
 };
 
