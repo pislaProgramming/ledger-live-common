@@ -108,7 +108,10 @@ function transactionToOperation(
     transactionSequenceNumber: isSender(transaction, addr)
       ? transaction.nonce
       : undefined,
-    hasFailed: transaction.status === "fail",
+    hasFailed:
+      !transaction.status ||
+      transaction.status === "fail" ||
+      transaction.status === "invalid",
   };
 }
 
