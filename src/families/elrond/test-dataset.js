@@ -33,7 +33,7 @@ export default dataset = {
             id: `js:2:elrond:erd1rnq7m8kdrpyfany4fweqtydsk4pgx0l6dtl6tvcad5wesagruxts62e9rk:`,
             seedIdentifier:
               "erd1rnq7m8kdrpyfany4fweqtydsk4pgx0l6dtl6tvcad5wesagruxts62e9rk",
-            name: "Elornd 1",
+            name: "Elrond 1",
             derivationMode: "",
             index: 0,
             freshAddress:
