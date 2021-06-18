@@ -13,7 +13,11 @@ const broadcast = async ({
 }: {
   signedOperation: SignedOperation,
 }): Promise<Operation> => {
-  const { hash } = await submit({ operation, signature });
+  const {
+    extra: { signUsingHash },
+  } = operation;
+
+  const { hash } = await submit({ operation, signature, signUsingHash });
 
   const { blockHeight, blockHash } = await confirmOperation(hash);
 

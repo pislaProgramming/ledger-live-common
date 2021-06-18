@@ -16,11 +16,12 @@ import { buildTransaction } from "./js-buildTransaction";
 const getEstimatedFees = async ({
   a,
   t,
+  signUsingHash = true,
 }: {
   a: Account,
   t: Transaction,
 }): Promise<BigNumber> => {
-  const unsigned = await buildTransaction(a, t);
+  const unsigned = await buildTransaction(a, t, signUsingHash);
   const fees = await getFees(JSON.parse(unsigned));
 
   return fees;
