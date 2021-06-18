@@ -121,7 +121,6 @@ export const makeSync = (
     async function main() {
       const accountId = `js:2:${initial.currency.id}:${initial.freshAddress}:${initial.derivationMode}`;
       const needClear = initial.id !== accountId;
-
       try {
         const shape = await getAccountShape(
           {
@@ -136,7 +135,6 @@ export const makeSync = (
           const a = needClear ? clearAccount(acc) : acc;
           // FIXME reconsider doing mergeOps here. work is redundant for impl like eth
           const operations = mergeOps(a.operations, shape.operations || []);
-
           return recalculateAccountBalanceHistories(
             postSync(a, {
               ...a,
@@ -340,7 +338,6 @@ export const makeScanAccounts = (
                   : "no account"
               }`
             );
-
             if (!account) return;
 
             account.name = !account.used
