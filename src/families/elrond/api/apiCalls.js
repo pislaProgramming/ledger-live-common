@@ -120,15 +120,24 @@ export default class ElrondApi {
     );
   }
 
-  async getLatestTransaction() {
-    const {
-      data: [{ txHash }],
-    } = await network({
+  async getBlockchainBlockHeight() {
+    const { data: transactions } = await network({
       method: "GET",
       url: `${this.API_URL}/transactions`,
     });
 
-    return txHash;
+    let blockHeight;
+    let index = 0;
+    while (!blockHeight) {
+      const confirmedTransaction = await this.getConfirmedTransaction(
+        transactions[index].txHash
+      );
+      blockHeight = confirmedTransaction.blockHeight;
+
+      index++;
+    }
+
+    return blockHeight;
   }
 
   async getConfirmedTransaction(txHash: string) {
